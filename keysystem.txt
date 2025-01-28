@@ -1,6 +1,6 @@
 print("loading thing pro sigma script yaeah")
 
-local Rayfield = return loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
    Name = "Vortex Key System 🔥🧏🤫",
    Icon = 0,
