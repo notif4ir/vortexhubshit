@@ -17,7 +17,7 @@ local Tab = Window:CreateTab("Key System", 4483362458)
 local activekeys = {
     {key = "dm9ydGV4a2V5L3YxLzc4MTc1Njg3OTMxNjc5NTg=", expiry = "2026-12-12 15:30:00"},
     {key = "dm9ydGV4a2V5L3YxLzU3MDkxODU2NzEzODU2Nzg=", expiry = "2025-1-3 10:45:00"},
-	{key = "dm9ydGV4a2V5L3YxLzQ3NjE4MzQ2MDk4MTM0OTU2", expiry = "2025-1-29 17:37:00"},
+	{key = "dm9ydGV4a2V5L3YxLzQ3NjE4MzQ2MDk4MTM0OTU2", expiry = "2025-1-30 17:37:00"},
     {key = "dm9ydGV4a2V5L3YxLzE0NTcxODQ3Njg3ODY3Mzg=", expiry = "2025-2-12 20:15:00"},
 }
 
