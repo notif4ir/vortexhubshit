@@ -1,0 +1,156 @@
+print("loading thing pro sigma script yaeah")
+
+local Rayfield = return loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local Window = Rayfield:CreateWindow({
+   Name = "Vortex Key System 🔥🧏🤫",
+   Icon = 0,
+   LoadingTitle = "VORTEX KEY SYSTEM LOADING",
+   LoadingSubtitle = "by notf4ir",
+   Theme = "Default",
+})
+
+print("maybe working idk")
+
+local Tab = Window:CreateTab("Key System", 4483362458)
+
+local activekeys = {
+    {key = "dm9ydGV4a2V5L3YxLzc4MTc1Njg3OTMxNjc5NTg=", expiry = "2026-12-12 15:30:00"},
+    {key = "dm9ydGV4a2V5L3YxLzU3MDkxODU2NzEzODU2Nzg=", expiry = "2025-1-3 10:45:00"},
+	{key = "dm9ydGV4a2V5L3YxLzQ3NjE4MzQ2MDk4MTM0OTU2", expiry = "2025-1-29 17:37:00"},
+    {key = "dm9ydGV4a2V5L3YxLzE0NTcxODQ3Njg3ODY3Mzg=", expiry = "2025-2-12 20:15:00"},
+}
+
+local currentkey = ""
+
+local function decodeBase64(data)
+    return game.HttpService:JSONDecode(game.HttpService:JSONEncode({data = data})).data
+end
+
+local function timeUntilExpiry(expiryDate)
+    local pattern = "(%d+)%-(%d+)%-(%d+) (%d+):(%d+):(%d+)"
+    local year, month, day, hour, minute, second = expiryDate:match(pattern)
+    local expiryTime = os.time({
+        year = tonumber(year),
+        month = tonumber(month),
+        day = tonumber(day),
+        hour = tonumber(hour),
+        min = tonumber(minute),
+        sec = tonumber(second)
+    })
+    local currentTime = os.time()
+    local diff = expiryTime - currentTime
+
+    if diff <= 0 then return "Expired" end
+
+    local days = math.floor(diff / (60 * 60 * 24))
+    diff = diff % (60 * 60 * 24)
+    local hours = math.floor(diff / (60 * 60))
+    diff = diff % (60 * 60)
+    local minutes = math.floor(diff / 60)
+    local seconds = diff % 60
+
+    return string.format("%dd; %dh; %dm; %ds;", days, hours, minutes, seconds)
+end
+
+local function isKeyValid(inputKey)
+    for _, entry in ipairs(activekeys) do
+        if decodeBase64(entry.key) == inputKey then
+            local expiryDate = entry.expiry
+            local currentTime = os.time()
+            local pattern = "(%d+)%-(%d+)%-(%d+) (%d+):(%d+):(%d+)"
+            local year, month, day, hour, minute, second = expiryDate:match(pattern)
+            local expiryTime = os.time({
+                year = tonumber(year),
+                month = tonumber(month),
+                day = tonumber(day),
+                hour = tonumber(hour),
+                min = tonumber(minute),
+                sec = tonumber(second)
+            })
+
+            if currentTime <= expiryTime then
+                return true, entry.expiry
+            end
+        end
+    end
+    return false, nil
+end
+
+local function load()
+    if game.GameId == 1516533665 then
+        loadstring(game:HttpGet(decodeBase64("aHR0cHM6Ly9wYXN0ZWJpbi5jb20vcmF3LzNWVzI4anRr")))()
+        print("loadedvortexpiggy")
+    end
+    if game.GameId == 3808081382 then
+        loadstring(game:HttpGet(decodeBase64("aHR0cHM6Ly9wYXN0ZWJpbi5jb20vcmF3L1ZUY0NaNGF4")))()
+        print("loadedvortextsb")
+    end
+    OrionLib:Destroy()
+end
+
+local function saveKey(key)
+    writefile("savedkey.txt", key)
+end
+
+local function readSavedKey()
+    if isfile("savedkey.txt") then
+        return readfile("savedkey.txt")
+    end
+    return nil
+end
+
+local savedKey = readSavedKey()
+if savedKey then
+    local isValid, expiryDate = isKeyValid(savedKey)
+    if isValid then
+        local timeLeft = timeUntilExpiry(expiryDate)
+        game.StarterGui:SetCore("ChatMakeSystemMessage", {
+            Text = "Saved key valid! Time remaining: " .. timeLeft,
+            Color = Color3.fromRGB(0, 255, 0),
+            Font = Enum.Font.SourceSansBold,
+            FontSize = Enum.FontSize.Size24
+        })
+        wait(3)
+        load()
+    else
+        delfile("savedkey.txt")
+        game.StarterGui:SetCore("ChatMakeSystemMessage", {
+            Text = "Saved key expired. Hub loaded normally.",
+            Color = Color3.fromRGB(255, 255, 0),
+            Font = Enum.Font.SourceSansBold,
+            FontSize = Enum.FontSize.Size24
+        })
+    end
+end
+
+local Input = Tab:CreateInput({
+   Name = "Key System",
+   CurrentValue = "",
+   PlaceholderText = "Input Placeholder",
+   RemoveTextAfterFocusLost = true,
+   Flag = "KeyInput",
+   Callback = function(Value)
+        print(Value)
+        currentkey = Value
+        local isValid, expiryDate = isKeyValid(currentkey)
+        if isValid then
+            saveKey(currentkey)
+            local timeLeft = timeUntilExpiry(expiryDate)
+            game.StarterGui:SetCore("ChatMakeSystemMessage", {
+                Text = "Valid key! Time remaining: " .. timeLeft,
+                Color = Color3.fromRGB(0, 255, 0),
+                Font = Enum.Font.SourceSansBold,
+                FontSize = Enum.FontSize.Size24
+            })
+            wait(3)
+            load()
+        else
+            game.StarterGui:SetCore("ChatMakeSystemMessage", {
+                Text = "Invalid or expired key!",
+                Color = Color3.fromRGB(255, 0, 0),
+                Font = Enum.Font.SourceSansBold,
+                FontSize = Enum.FontSize.Size24
+            })
+        end
+   end,
+})
