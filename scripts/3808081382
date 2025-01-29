@@ -77,9 +77,17 @@ Tab2:CreateButton({
 Tab2:CreateButton({
 	Name = "Ragdoll Bypass",
 	Callback = function()
-		game["Run Service"].RenderStepped:Connect(function()
-    		game.Players.LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.GettingUp)
-		end)
+game["Run Service"].RenderStepped:Connect(function()
+    local humanoid = game.Players.LocalPlayer.Character.Humanoid
+    if humanoid:GetState() == Enum.HumanoidStateType.Freefall or
+       humanoid:GetState() == Enum.HumanoidStateType.Physics or
+       humanoid:GetState() == Enum.HumanoidStateType.Ragdoll then
+        humanoid:ChangeState(Enum.HumanoidStateType.GettingUp)
+        wait(0.5) -- wait for a bit before switching to Standing
+        humanoid:ChangeState(Enum.HumanoidStateType.Seated) -- Or change to Standing if needed
+    end
+end)
+
 	end
 })
 
