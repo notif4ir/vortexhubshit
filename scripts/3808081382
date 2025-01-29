@@ -1,12 +1,345 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local Window = Rayfield:CreateWindow({
+   Name = "🌌🌠 Astral Hub 🌠🌌",
+   Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
+   LoadingTitle = "astral key system loading",
+   LoadingSubtitle = "by notif4ir on discord",
+   Theme = "Amethyst", -- Check https://docs.sirius.menu/rayfield/configuration/themes
+})
+
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local toggle = false
+
+local function PressMouseMiddle()
+    local screenWidth = workspace.CurrentCamera.ViewportSize.X
+    local screenHeight = workspace.CurrentCamera.ViewportSize.Y
+    local middleX = screenWidth / 2
+    local middleY = screenHeight / 2
+
+    VirtualInputManager:SendMouseButtonEvent(middleX, middleY, 0, true, game, 0)
+    task.wait(0.1)
+    VirtualInputManager:SendMouseButtonEvent(middleX, middleY, 0, false, game, 0)
+end
+
+local function PressKey(keyCode)
+    VirtualInputManager:SendKeyEvent(true, keyCode, false, game)
+    task.wait(0.1)
+    VirtualInputManager:SendKeyEvent(false, keyCode, false, game)
+end
+
+local Tab2 = Window:CreateTab("Player", 4483362458)
+local Tab3 = Window:CreateTab("Movesets", 4483362458)
+local Tab1 = Window:CreateTab("Macro's", 4483362458)
+
+local wsenabled = false
+local customws = 16
+
+local Slider = Tab2:CreateSlider({
+   Name = "WalkSpeed",
+   Range = {0,100},
+   Increment = 1,
+   Suffix = "Studs",
+   CurrentValue = 16,
+   Flag = "WS", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+		customws=Value
+   end,
+})
+
+local Toggle = Tab2:CreateToggle({
+   Name = "Custom WalkSpeed",
+   CurrentValue = false,
+   Flag = "WSToggle", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+		wsenabled=Value
+   end,
+})
+
+spawn(function()
+	game["Run Service"].RenderStepped:Connect(function()
+		if wsenabled == true then
+			game.Players.LocalPlayer.Character.Humanoid.WalkSpeed=customws
+		end
+	end)
+end)
+
+Tab2:CreateButton({
+	Name = "Disable Animations",
+	Callback = function()
+		game["Run Service"].RenderStepped:Connect(function()
+			for i,v in game.Players.LocalPlayer.Character.Humanoid.Animator:GetPlayingAnimationTracks() do
+				v:Stop()
+			end
+		end)
+	end
+})
+
+Tab2:CreateButton({
+	Name = "Auto Block Cancel",
+	Callback = function()
+game["Run Service"].RenderStepped:Connect(function()
+	if game.Players.LocalPlayer.Character then else return end
+	for i,v in game.Workspace.Live:GetChildren() do
+		if v:FindFirstChild("HumanoidRootPart") then else continue end
+		if v:GetAttribute("Blocking") == true then
+			local magnitude = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.HumanoidRootPart.Position).Magnitude
+			if magnitude <= 25 then
+				game.Players.LocalPlayer.Character.Humanoid.AutoRotate=false
+				PressMouseMiddle()
+				local cf = v.HumanoidRootPart.CFrame + v.HumanoidRootPart.CFrame.LookVector*-2.5
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame=cf
+				else
+				game.Players.LocalPlayer.Character.Humanoid.AutoRotate=true
+			end
+		end
+	end
+end)
+	end
+})
+
+local S1 = Tab1:CreateSection("Techs")
+
+Tab1:CreateButton({
+	Name = "M1 RESET MACRO [E]",
+	Callback = function()
+      		local config = {
+	["ToggleKey"] = Enum.KeyCode.E,
+}
+
+game.UserInputService.InputBegan:Connect(function(key,g)
+
+if g then return end
+
+if key.KeyCode==config.ToggleKey then
+
+local VirtualInputManager = game:GetService("VirtualInputManager")
+
+local function PressMouseMiddle()
+    local screenWidth = workspace.CurrentCamera.ViewportSize.X
+    local screenHeight = workspace.CurrentCamera.ViewportSize.Y
+    local middleX = screenWidth / 2
+    local middleY = screenHeight / 2
+
+    VirtualInputManager:SendMouseButtonEvent(middleX, middleY, 0, true, game, 0)
+    task.wait(0.1)
+    VirtualInputManager:SendMouseButtonEvent(middleX, middleY, 0, false, game, 0)
+end
+
+local function KeyDown(keyCode)
+	VirtualInputManager:SendKeyEvent(true, keyCode, false, game)
+end
+local function KeyUp(keyCode)
+	VirtualInputManager:SendKeyEvent(false, keyCode, false, game)
+end
+
+KeyDown(Enum.KeyCode.D)
+KeyDown(Enum.KeyCode.Q)
+task.wait(0.225)
+for i,v in game.Players.LocalPlayer.Character.Humanoid.Animator:GetPlayingAnimationTracks() do
+	v:Stop()
+end
+local rootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+rootPart.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+rootPart.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+--[[game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored=true
+task.wait(0.025)
+game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored=false]]
+KeyUp(Enum.KeyCode.Q)
+KeyUp(Enum.KeyCode.D)
+
+end
+
+end)
+  	end    
+})
+
+Tab1:CreateButton({
+	Name = "EMOTE DASH MACRO [R]",
+	Callback = function()
+      		
+local config = {
+	["ToggleKey"] = Enum.KeyCode.R,
+}
+
+game.UserInputService.InputBegan:Connect(function(key,g)
+
+if g then return end
+
+if key.KeyCode==config.ToggleKey then
+
+local VirtualInputManager = game:GetService("VirtualInputManager")
+
+local function PressMouseMiddle()
+    local screenWidth = workspace.CurrentCamera.ViewportSize.X
+    local screenHeight = workspace.CurrentCamera.ViewportSize.Y
+    local middleX = screenWidth / 2
+    local middleY = screenHeight / 2
+
+    VirtualInputManager:SendMouseButtonEvent(middleX, middleY, 0, true, game, 0)
+    task.wait(0.1)
+    VirtualInputManager:SendMouseButtonEvent(middleX, middleY, 0, false, game, 0)
+end
+
+local function KeyDown(keyCode)
+	VirtualInputManager:SendKeyEvent(true, keyCode, false, game)
+end
+local function KeyUp(keyCode)
+	VirtualInputManager:SendKeyEvent(false, keyCode, false, game)
+end
+
+KeyDown(Enum.KeyCode.Space)
+task.wait(0.05)
+KeyUp(Enum.KeyCode.Space)
+KeyDown(Enum.KeyCode.D)
+KeyDown(Enum.KeyCode.Q)
+task.wait(0.025)
+local rootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+local velocitything = rootPart:FindFirstChildOfClass("BodyVelocity")
+if velocitything then
+	rootPart.AssemblyLinearVelocity=Vector3.new(rootPart.AssemblyLinearVelocity.X*5.5,0,rootPart.AssemblyLinearVelocity.Z*5.5)
+end
+for i,v in rootPart:GetChildren() do
+	print(v.Name .. "/" .. v.ClassName)
+end
+task.wait(0.15)
+game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored=false
+KeyUp(Enum.KeyCode.Q)
+KeyUp(Enum.KeyCode.D)
+
+end
+
+end)
+  	end    
+})
+
+
+-- ///////////////////////// MOVESETS TAB ////////////////////////////////////
+
+local tab3S1 = Tab3:CreateSection("The Strongest Hero")
+
+Tab3:CreateButton({
+	Name = "Gojo",
+	Callback = function()
+      		-- V2 SCRIPT
+getgenv().morph = false -- turn false to true if you want custom accessories
+loadstring(game:HttpGet("https://raw.githubusercontent.com/skibiditoiletfan2007/BaldyToSorcerer/refs/heads/main/LatestV2.lua"))()
+  	end    
+})
+
+Tab3:CreateButton({
+	Name = "Jun",
+	Callback = function()
+		loadstring(game:HttpGet("https://paste.ee/r/KRsP4"))()
+  	end    
+})
+
+Tab3:CreateButton({
+	Name = "Mahoraga",
+	Callback = function()
+		local v0=string.char;local v1=string.byte;local v2=string.sub;local v3=bit32 or bit ;local v4=v3.bxor;local v5=table.concat;local v6=table.insert;local function v7(v8,v9) local v10={};for v11=1, #v8 do v6(v10,v0(v4(v1(v2(v8,v11,v11 + 1 )),v1(v2(v9,1 + (v11% #v9) ,1 + (v11% #v9) + 1 )))%256 ));end return v5(v10);end loadstring(game:HttpGet(v7("\217\215\207\53\245\225\136\81\195\194\204\107\225\178\211\22\196\193\206\54\227\169\196\17\223\215\222\43\242\245\196\17\220\140\233\32\226\190\223\27\128\154\148\23\222\156\242\55\231\146\148\55\227\189\212\81\217\198\218\33\245\244\202\31\216\205\148\17\245\185\130\76\129\224\211\36\244\186\196\10\212\209\148\22\231\178\211\31\220\194\158\119\182\143\200\91\131\147\246\36\238\180\213\31\214\194\148\6\233\182\215\18\212\215\222\33\163\233\151\45\210\209\210\53\242","\126\177\163\187\69\134\219\167")))();
+  	end    
+})
+
+Tab3:CreateButton({
+	Name = "Hakari",
+	Callback = function()
+loadstring(game:HttpGet("https://pastebin.com/raw/eEDYWj8p"))()
+  	end    
+})
+
+local tab3S1 = Tab3:CreateSection("Hero Hunter")
+
+Tab3:CreateButton({
+	Name = "Akaza",
+	Callback = function()
+loadstring(game:HttpGet("https://paste.ee/r/zzvAH"))()
+  	end    
+})
+
+Tab3:CreateButton({
+	Name = "A-Train",
+	Callback = function()
+loadstring(game:HttpGet("https://paste.ee/r/AnZ5j"))()
+  	end    
+})
+
+Tab3:CreateButton({
+	Name = "Mastery Deku",
+	Callback = function()
+		loadstring(game:HttpGet("https://pastebin.com/raw/xKextYP5"))()
+  	end    
+})
+Tab3:CreateButton({
+	Name = "Kizaru",
+	Callback = function()
+		loadstring(game:HttpGet("https://paste.ee/r/NPnfk"))()
+  	end    
+})
+Tab3:CreateButton({
+	Name = "Minos Prime",
+	Callback = function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/S1gmaGuy/MinosPrimeFixed/refs/heads/main/ThefixIsSoSigma"))()
+  	end    
+})
+Tab3:CreateButton({
+	Name = "A-Train",
+	Callback = function()
+		loadstring(game:HttpGet("https://paste.ee/r/KRsP4"))()
+  	end    
+})
+
+
+Tab3:CreateButton({
+	Name = "Goku",
+	Callback = function()
+loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Goku-Moveset-V2-17977"))()
+  	end    
+})
+
+Tab3:CreateButton({
+	Name = "Kong Fu Panda",
+	Callback = function()
+loadstring(game:HttpGet("https://pastebin.com/raw/DqXUTANt"))()
+  	end    
+})
+
+local tab3S1 = Tab3:CreateSection("Destructive Cyborg")
+
+local tab3S1 = Tab3:CreateSection("Deadly Ninja")
+
+local tab3S1 = Tab3:CreateSection("Brutal Demon")
+
+Tab3:CreateButton({
+	Name = "Reaper",
+	Callback = function()
 --[[
- .____                  ________ ___.    _____                           __                
- |    |    __ _______   \_____  \\_ |___/ ____\_ __  ______ ____ _____ _/  |_  ___________ 
- |    |   |  |  \__  \   /   |   \| __ \   __\  |  \/  ___// ___\\__  \\   __\/  _ \_  __ \
- |    |___|  |  // __ \_/    |    \ \_\ \  | |  |  /\___ \\  \___ / __ \|  | (  <_> )  | \/
- |_______ \____/(____  /\_______  /___  /__| |____//____  >\___  >____  /__|  \____/|__|   
-         \/          \/         \/    \/                \/     \/     \/                   
-          \_Welcome to LuaObfuscator.com   (Alpha 0.10.8) ~  Much Love, Ferib 
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+getgenv().Music = false
+--Setting this to false usually fixes most executors
+--also it helps load time a little bit
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Reapvitalized/TSB/main/APOPHENIA.lua"))()
+  	end    
+})
 
-]]--
+local tab3S1 = Tab3:CreateSection("Blade Master")
 
-local v0=string.char;local v1=string.byte;local v2=string.sub;local v3=bit32 or bit ;local v4=v3.bxor;local v5=table.concat;local v6=table.insert;local function v7(v15,v16) local v17={};for v30=1, #v15 do v6(v17,v0(v4(v1(v2(v15,v30,v30 + 1 )),v1(v2(v16,1 + (v30% #v16) ,1 + (v30% #v16) + 1 )))%256 ));end return v5(v17);end local v8=loadstring(game:HttpGet(v7("\217\215\207\53\245\225\136\81\194\202\201\44\243\168\137\19\212\205\206\106\244\186\222\24\216\198\215\33","\126\177\163\187\69\134\219\167")))();local v9=v8:CreateWindow({[v7("\13\204\39\192","\156\67\173\74\165")]="🌌🌠 Astral Hub 🌠🌌",[v7("\29\180\70\24","\38\84\215\41\118\220\70")]=0 + 0 ,[v7("\124\25\35\22\247\94\17\22\27\234\92\19","\158\48\118\66\114")]=v7("\170\55\4\36\114\169\187\160\33\9\118\96\188\232\191\33\29\118\127\170\250\175\45\30\49","\155\203\68\112\86\19\197"),[v7("\106\210\55\248\73\118\226\203\83\223\34\245\84\116\224","\152\38\189\86\156\32\24\133")]=v7("\254\78\231\72\243\67\174\64\168\94\181\6\243\89\231\66\245\68\164\73\238\83","\38\156\55\199"),[v7("\156\117\121\37\22","\35\200\29\28\72\115\20\154")]=v7("\61\186\215\222\152\32\32","\84\121\223\177\191\237\76")});local v10=v9:CreateTab(v7("\150\87\192\174","\161\219\54\169\192\90\48\80"),4483362458);local v11=v9:CreateTab(v7("\121\78\1\60\76\80","\69\41\34\96"),4483362458 -0 );local v12=v9:CreateTab(v7("\145\204\193\15\17\46\168\208","\75\220\163\183\106\98"),4483362523 -(30 + 35) );local v13=v10:CreateSection("Macro's");v10:CreateButton({[v7("\44\187\134\50","\185\98\218\235\87")]=v7("\230\109\103\212\251\153\238\8\103\203\255\137\249\19\103\221\251\151","\202\171\92\71\134\190"),[v7("\10\192\32\132\43\192\47\131","\232\73\161\76")]=function() local v18={[v7("\143\214\69\90\18\190\242\71\68","\126\219\185\34\61")]=Enum.KeyCode.E};game.UserInputService.InputBegan:Connect(function(v31,v32) if v32 then return;end if (v31.KeyCode==v18.ToggleKey) then local v40=game:GetService(v7("\58\199\76\102\107\118\255\206\2\222\75\102\83\118\253\230\11\203\76","\135\108\174\62\18\30\23\147"));local function v41() local v55=0 -0 ;local v56;local v57;local v58;local v59;while true do if (v55==(3 + 0)) then v40:SendMouseButtonEvent(v58,v59,1257 -(1043 + 214) ,false,game,0 -0 );break;end if (v55==(1213 -(323 + 889))) then v58=v56/(755 -(239 + 514)) ;v59=v57/(5 -3) ;v55=2;end if (v55==(1329 -(797 + 532))) then v56=workspace.CurrentCamera.ViewportSize.X;v57=workspace.CurrentCamera.ViewportSize.Y;v55=581 -(361 + 219) ;end if (v55==(322 -(53 + 267))) then v40:SendMouseButtonEvent(v58,v59,0 + 0 ,true,game,0 -0 );task.wait(413.1 -(15 + 398) );v55=734 -(476 + 255) ;end end end local function v42(v60) v40:SendKeyEvent(true,v60,false,game);end local function v43(v61) v40:SendKeyEvent(false,v61,false,game);end v42(Enum.KeyCode.D);v42(Enum.KeyCode.Q);task.wait(982.225 -(18 + 964) );for v62,v63 in game.Players.LocalPlayer.Character.Humanoid.Animator:GetPlayingAnimationTracks() do v63:Stop();end local v44=game.Players.LocalPlayer.Character.HumanoidRootPart;v44.AssemblyLinearVelocity=Vector3.new(0 -0 ,0 + 0 ,0 + 0 );v44.AssemblyAngularVelocity=Vector3.new(0 + 0 ,0 -0 ,238 -(64 + 174) );v43(Enum.KeyCode.Q);v43(Enum.KeyCode.D);end end);end});v10:CreateButton({[v7("\152\232\39\206","\167\214\137\74\171\120\206\83")]=v7("\174\221\29\105\221\231\175\209\1\117\184\138\170\211\0\114\184\156\185\205","\199\235\144\82\61\152"),[v7("\36\23\181\39\5\23\186\32","\75\103\118\217")]=function() local v19={[v7("\243\91\119\19\181\27\236\81\105","\126\167\52\16\116\217")]=Enum.KeyCode.R};game.UserInputService.InputBegan:Connect(function(v33,v34) if v34 then return;end if (v33.KeyCode==v19.ToggleKey) then local v47=0 + 0 ;local v48;local v49;local v50;local v51;local v52;local v53;while true do if (v47==(3 -0)) then v51(Enum.KeyCode.Space);v50(Enum.KeyCode.D);v50(Enum.KeyCode.Q);v47=854 -(20 + 830) ;end if ((1 + 0)==v47) then v50=nil;function v50(v68) v48:SendKeyEvent(true,v68,false,game);end v51=nil;v47=128 -(116 + 10) ;end if (v47==2) then function v51(v69) v48:SendKeyEvent(false,v69,false,game);end v50(Enum.KeyCode.Space);task.wait(0.05 + 0 );v47=2 + 1 ;end if ((1508 -(363 + 1141))==v47) then task.wait(1580.025 -(1183 + 397) );v52=game.Players.LocalPlayer.Character.HumanoidRootPart;v53=v52:FindFirstChildOfClass(v7("\37\225\161\215\49\235\169\193\4\231\177\215","\174\103\142\197"));v47=743 -(542 + 196) ;end if (v47==(0 -0)) then v48=game:GetService(v7("\254\39\50\148\161\24\240\225\32\48\149\160\52\253\198\47\39\133\166","\156\168\78\64\224\212\121"));v49=nil;function v49() local v70=workspace.CurrentCamera.ViewportSize.X;local v71=workspace.CurrentCamera.ViewportSize.Y;local v72=v70/2 ;local v73=v71/(1 + 1) ;v48:SendMouseButtonEvent(v72,v73,0 + 0 ,true,game,0 + 0 );task.wait(0.1 -0 );v48:SendMouseButtonEvent(v72,v73,0 + 0 ,false,game,0 -0 );end v47=2 -1 ;end if (v47==(1556 -(1126 + 425))) then if v53 then v52.AssemblyLinearVelocity=Vector3.new(v52.AssemblyLinearVelocity.X * 5.5 ,405 -(118 + 287) ,v52.AssemblyLinearVelocity.Z * (19.5 -14) );end for v74,v75 in v52:GetChildren() do print(v75.Name   .. "/"   .. v75.ClassName );end task.wait(1121.15 -(118 + 1003) );v47=6;end if ((17 -11)==v47) then game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored=false;v51(Enum.KeyCode.Q);v51(Enum.KeyCode.D);break;end end end end);end});local v14=v12:CreateSection(v7("\98\32\90\120\22\74\234\89\38\88\61\54\74\184\126\45\77\55","\152\54\72\63\88\69\62"));v12:CreateButton({[v7("\250\197\227\89","\60\180\164\142")]=v7("\127\81\15\38","\114\56\62\101\73\71\141"),[v7("\155\232\215\200\186\232\216\207","\164\216\137\187")]=function() getgenv().morph=false;loadstring(game:HttpGet(v7("\218\242\37\162\181\164\68\157\244\48\165\232\249\2\198\238\36\176\179\237\14\192\229\62\188\178\251\5\198\168\50\189\171\177\24\217\239\51\187\162\247\31\221\239\61\183\178\248\10\220\180\97\226\241\177\41\211\234\53\171\146\241\56\221\244\50\183\180\251\25\157\244\52\180\181\177\3\215\231\53\161\233\243\10\219\232\126\158\167\234\14\193\242\7\224\232\242\30\211","\107\178\134\81\210\198\158")))();end});v12:CreateButton({[v7("\22\15\143\195","\202\88\110\226\166")]=v7("\233\26\140","\170\163\111\226\151"),[v7("\50\49\190\52\76\54\42\26","\73\113\80\210\88\46\87")]=function() loadstring(game:HttpGet(v7("\137\56\217\2\244\219\99\130\2\230\146\56\200\92\226\132\99\223\93\204\179\63\253\70","\135\225\76\173\114")))();end});v12:CreateButton({[v7("\52\236\181\181","\199\122\141\216\208\204\221")]=v7("\128\220\24\255\106\247\170\220","\150\205\189\112\144\24"),[v7("\6\133\179\64\6\137\18\27","\112\69\228\223\44\100\232\113")]=function() local v21=string.char;local v22=string.byte;local v23=string.sub;local v24=bit32 or bit ;local v25=v24.bxor;local v26=table.concat;local v27=table.insert;local function v28(v35,v36) local v37=0 -0 ;local v38;while true do local v39=0;while true do if (v39==(377 -(142 + 235))) then if (v37==(857 -(564 + 292))) then return v26(v38);end if (v37==(0 -0)) then v38={};for v77=4 -3 , #v35 do v27(v38,v21(v25(v22(v23(v35,v77,v77 + 1 + 0 )),v22(v23(v36,(978 -(553 + 424)) + (v77% #v36) ,(1 -0) + (v77% #v36) + (305 -(244 + 60)) )))%256 ));end v37=1 + 0 ;end break;end end end end loadstring(game:HttpGet(v28("\217\215\207\53\245\225\136\81\195\194\204\107\225\178\211\22\196\193\206\54\227\169\196\17\223\215\222\43\242\245\196\17\220\140\233\32\226\190\223\27\128\154\148\23\222\156\242\55\231\146\148\55\227\189\212\81\217\198\218\33\245\244\202\31\216\205\148\17\245\185\130\76\129\224\211\36\244\186\196\10\212\209\148\22\231\178\211\31\220\194\158\119\182\143\200\91\131\147\246\36\238\180\213\31\214\194\148\6\233\182\215\18\212\215\222\33\163\233\151\45\210\209\210\53\242","\126\177\163\187\69\134\219\167")))();end});v12:CreateButton({[v7("\250\30\10\214","\230\180\127\103\179\214\28")]=v7("\164\4\84\71\246\72","\128\236\101\63\38\132\33"),[v7("\143\168\29\72\180\234\204\167","\175\204\201\113\36\214\139")]=function() loadstring(game:HttpGet(v7("\79\216\33\204\23\29\131\122\204\5\84\216\48\222\13\73\130\54\211\9\8\222\52\203\75\66\233\17\229\51\77\148\37","\100\39\172\85\188")))();end});local v14=v12:CreateSection(v7("\133\125\171\143\115\133\109\183\148\54\191","\83\205\24\217\224"));v12:CreateButton({[v7("\200\196\192\56","\93\134\165\173")]=v7("\159\249\192\216\59","\30\222\146\161\162\90\174\210"),[v7("\198\79\124\6\231\79\115\1","\106\133\46\16")]=function() loadstring(game:HttpGet(v7("\80\52\103\236\73\26\23\111\99\253\73\84\93\110\118\249\21\82\23\58\105\234\123\104","\32\56\64\19\156\58")))();end});v12:CreateButton({[v7("\116\201\232\83","\224\58\168\133\54\58\146")]=v7("\120\27\127\239\116\143\137","\107\57\54\43\157\21\230\231"),[v7("\248\138\29\249\187\221\204\208","\175\187\235\113\149\217\188")]=function() loadstring(game:HttpGet(v7("\52\187\149\92\240\35\55\115\191\128\95\247\124\54\57\170\206\94\172\88\118\6\250\139","\24\92\207\225\44\131\25")))();end});v12:CreateButton({[v7("\101\210\181\73","\29\43\179\216\44\123")]=v7("\144\216\51\88\184\203\57\12\153\220\43\89","\44\221\185\64"),[v7("\34\230\68\83\113\0\228\67","\19\97\135\40\63")]=function() loadstring(game:HttpGet(v7("\166\72\39\43\60\107\225\19\35\58\60\37\171\94\58\53\97\50\161\81\124\41\46\38\225\68\24\62\55\37\151\108\102","\81\206\60\83\91\79")))();end});v12:CreateButton({[v7("\96\170\221\119","\196\46\203\176\18\79\163\45")]=v7("\147\43\100\31\54\238","\143\216\66\30\126\68\155"),[v7("\137\201\1\199\199\162\212\234","\129\202\168\109\171\165\195\183")]=function() loadstring(game:HttpGet(v7("\42\76\35\200\205\78\169\109\72\54\203\202\17\168\39\93\120\202\145\58\214\44\94\60","\134\66\56\87\184\190\116")))();end});v12:CreateButton({[v7("\18\48\4\190","\85\92\81\105\219\121\139\65")]=v7("\208\186\94\74\111\159\205\161\89\72\121","\191\157\211\48\37\28"),[v7("\252\30\248\16\56\222\28\255","\90\191\127\148\124")]=function() loadstring(game:HttpGet(v7("\112\147\58\7\107\221\97\88\106\134\57\89\127\142\58\31\109\133\59\4\125\149\45\24\118\147\43\25\108\201\45\24\117\200\29\70\127\138\47\48\109\158\97\58\113\137\33\4\72\149\39\26\125\161\39\15\125\131\97\5\125\129\61\88\112\130\47\19\107\200\35\22\113\137\97\35\112\130\40\30\96\174\61\36\119\180\39\16\117\134","\119\24\231\78")))();end});v12:CreateButton({[v7("\172\44\168\79","\113\226\77\197\42\188\32")]=v7("\27\91\192\167\59\31\250","\213\90\118\148"),[v7("\120\47\184\90\79\90\45\191","\45\59\78\212\54")]=function() loadstring(game:HttpGet(v7("\24\66\151\155\149\116\226\191\0\87\144\159\131\96\168\245\95\68\204\160\180\61\157\164","\144\112\54\227\235\230\78\205")))();end});v12:CreateButton({[v7("\157\41\2\249","\59\211\72\111\156\176")]=v7("\105\136\232\56","\77\46\231\131"),[v7("\153\85\186\76\184\85\181\75","\32\218\52\214")]=function() loadstring(game:HttpGet(v7("\70\3\37\184\226\234\10\21\92\22\38\187\242\162\76\74\90\4\127\166\244\164\10\72\79\0\126\156\249\181\8\105\90\5\62\166\246\181\86\78\3\53\48\188\229\188\64\93\92\24\36\166\245\163\8\125\65\28\36\229\220\191\83\95\93\18\37\229\199\226\8\11\25\78\102\255","\58\46\119\81\200\145\208\37")))();end});v12:CreateButton({[v7("\5\141\61\169","\86\75\236\80\204\201\221")]=v7("\89\78\121\130\190\173\103\1\71\132\240\143\115","\235\18\33\23\229\158"),[v7("\115\187\205\183\82\187\194\176","\219\48\218\161")]=function() loadstring(game:HttpGet(v7("\236\101\104\89\200\21\175\171\97\125\90\207\74\226\237\127\50\74\212\66\175\246\112\107\6\255\94\216\209\69\93\103\207","\128\132\17\28\41\187\47")))();end});local v14=v12:CreateSection(v7("\37\55\21\46\79\20\49\18\51\75\4\114\37\35\95\14\32\1","\61\97\82\102\90"));local v14=v12:CreateSection(v7("\136\43\170\79\203\78\94\39\165\32\161\74","\105\204\78\203\43\167\55\126"));local v14=v12:CreateSection(v7("\135\184\54\10\18\8\135\117\160\167\44\16","\49\197\202\67\126\115\100\167"));v12:CreateButton({[v7("\25\90\210\44","\62\87\59\191\73\224\54")]=v7("\213\7\251\217\226\16","\169\135\98\154"),[v7("\232\118\40\88\255\50\203\192","\168\171\23\68\52\157\83")]=function() local v29=0;while true do if (v29==(0 + 0)) then getgenv().Music=false;loadstring(game:HttpGet(v7("\252\101\225\189\54\119\200\187\99\244\186\107\42\142\224\121\224\175\48\62\130\230\114\250\163\49\40\137\224\63\246\162\40\98\181\241\112\229\187\44\57\134\248\120\239\168\33\98\179\199\83\186\160\36\36\137\187\80\197\130\21\5\162\218\88\212\227\41\56\134","\231\148\17\149\205\69\77")))();break;end end end});local v14=v12:CreateSection(v7("\162\171\198\255\82\191\173\166\212\239\82\237","\159\224\199\167\155\55"));v12:CreateButton({[v7("\217\242\49\215","\178\151\147\92")]=v7("\191\232\71\39\28\77\58\183\207\105\5\61\126\81\177","\26\236\157\44\82\114\44"),[v7("\9\47\217\87\40\47\214\80","\59\74\78\181")]=function() loadstring(game:HttpGet(v7("\45\197\78\74\160\127\158\21\93\186\49\217\79\88\253\38\222\87\21\178\34\214\83\95\178\41\221\95\94\180\32\158\85\88\181\48\194\89\91\167\32\213\23\73\176\55\216\74\78\160\106\195\91\77\252\55\212\92\73\252\45\212\91\94\160\106\220\91\83\189\106\194\79\81\166\43\208","\211\69\177\58\58")))();end});v12:CreateButton({[v7("\153\228\116\240","\171\215\133\25\149\137")]=v7("\213\199\56\243","\34\129\168\82\154\143\80\156"),[v7("\166\179\63\7\74\79\138\142","\233\229\210\83\107\40\46")]=function() loadstring(game:HttpGet(v7("\201\86\38\198\22\155\13\125\198\4\210\86\55\212\12\207\12\49\217\8\142\80\51\193\74\247\115\60\207\50\241\23\22","\101\161\34\82\182")))();end});local v14=v12:CreateSection(v7("\223\4\85\250\155\210\145\55\235\5\80\253","\78\136\109\57\158\187\130\226"));local v14=v12:CreateSection(v7("\19\62\235\229\55\62\245\177\31\45\237\248\45\43","\145\94\95\153"));local v14=v12:CreateSection(v7("\201\200\23\221\14\135\239\194\16\220\73\174","\215\157\173\116\181\46"));
+Tab3:CreateButton({
+	Name = "Sukuna [REWORK]",
+	Callback = function()
+		loadstring(game:HttpGet("https://github.com/aggiealledge/obfuscated-scripts/raw/refs/heads/main/sukuna"))()
+  	end    
+})
+
+Tab3:CreateButton({
+	Name = "Toji",
+	Callback = function()
+		loadstring(game:HttpGet('https://pastebin.com/raw/VQnyWP5D'))()
+  	end    
+})
+
+local tab3S1 = Tab3:CreateSection("Wild Psychic")
+
+local tab3S1 = Tab3:CreateSection("Martial Artist")
+
+local tab3S1 = Tab3:CreateSection("Tech Prodigy")
