@@ -75,6 +75,25 @@ Tab2:CreateButton({
 })
 
 Tab2:CreateButton({
+	Name = "Ragdoll Bypass",
+	Callback = function()
+		game["Run Service"].RenderStepped:Connect(function()
+    		game.Players.LocalPlayer.Character.Humanoid:SetState(Enum.HumanoidStateType.GettingUp)
+		end)
+	end
+})
+
+Tab2:CreateButton({
+	Name = "Camera Control",
+	Callback = function()
+		game["Run Service"].RenderStepped:Connect(function()
+    		game.Workspace.CurrentCamera.CameraType=Enum.CameraType.Custom
+    		game.Players.LocalPlayer.Character.Humanoid.AutoRotate=true
+		end)
+	end
+})
+
+Tab2:CreateButton({
 	Name = "Auto Block Cancel",
 	Callback = function()
 game["Run Service"].RenderStepped:Connect(function()
