@@ -78,7 +78,7 @@ Tab2:CreateButton({
 	Name = "Ragdoll Bypass",
 	Callback = function()
 		game["Run Service"].RenderStepped:Connect(function()
-    		game.Players.LocalPlayer.Character.Humanoid:SetState(Enum.HumanoidStateType.GettingUp)
+    		game.Players.LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.GettingUp)
 		end)
 	end
 })
