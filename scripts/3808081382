@@ -112,7 +112,9 @@ local function resetVelocity()
 end
 
 local function onUpdate()
-    if Humanoid.MoveDirection.Magnitude <= 0 and Humanoid:GetState() ~= Enum.HumanoidStateType.Running then
+    if Humanoid.WalkSpeed <= 2 or Humanoid.Parent.HumanoidRootPart.Anchored==true then
+        resetVelocity()
+    elseif Humanoid.MoveDirection.Magnitude <= 0 and Humanoid:GetState() ~= Enum.HumanoidStateType.Running then
         resetVelocity()
     end
 end
