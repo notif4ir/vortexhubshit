@@ -90,48 +90,36 @@ Tab2:CreateButton({
 Tab2:CreateButton({
 	Name = "No Velocity/Knockback",
 	Callback = function()
-		game["Run Service"].RenderStepped:Connect(function()
-    local movedirection = game.Players.LocalPlayer.Character.Humanoid.MoveDirection
-    local jump = game.Players.LocalPlayer.Character.Humanoid.Jump
-    if movedirection.Magnitude < 0.01 and not jump then
-        game.Players.LocalPlayer.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
-        game.Players.LocalPlayer.Character.HumanoidRootPart.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
-		for i,v in game.Players.LocalPlayer.Character:GetDescendants() do
-			if v:IsA("BodyVelocity") or v:IsA("LinearVelocity") or v:IsA("BodyPosition") or v:IsA("BodyThrust") then
-				v:Destroy()
-			end
-		end
-    end
-end)
+local RunService = game["Run Service"]
+local Players = game.Players
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character
+local Humanoid = Character.Humanoid
+local HumanoidRootPart = Character.HumanoidRootPart
 
-game["Run Service"].PostSimulation:Connect(function()
-    local movedirection = game.Players.LocalPlayer.Character.Humanoid.MoveDirection
-    local jump = game.Players.LocalPlayer.Character.Humanoid.Jump
-    if movedirection.Magnitude < 0.01 and not jump then
-        game.Players.LocalPlayer.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
-        game.Players.LocalPlayer.Character.HumanoidRootPart.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
-		for i,v in game.Players.LocalPlayer.Character:GetDescendants() do
-			if v:IsA("BodyVelocity") or v:IsA("LinearVelocity") or v:IsA("BodyPosition") or v:IsA("BodyThrust") then
-				v:Destroy()
-			end
-		end
+local function clearForces()
+    for _, v in Character:GetDescendants() do
+        if v:IsA("BodyVelocity") or v:IsA("LinearVelocity") or v:IsA("BodyPosition") or v:IsA("BodyThrust") then
+            v:Destroy()
+        end
     end
-end)
+end
 
+local function resetVelocity()
+    HumanoidRootPart.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+    HumanoidRootPart.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+    clearForces()
+end
 
-game["Run Service"].PreRender:Connect(function()
-    local movedirection = game.Players.LocalPlayer.Character.Humanoid.MoveDirection
-    local jump = game.Players.LocalPlayer.Character.Humanoid.Jump
-    if movedirection.Magnitude < 0.01 and not jump then
-        game.Players.LocalPlayer.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
-        game.Players.LocalPlayer.Character.HumanoidRootPart.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
-		for i,v in game.Players.LocalPlayer.Character:GetDescendants() do
-			if v:IsA("BodyVelocity") or v:IsA("LinearVelocity") or v:IsA("BodyPosition") or v:IsA("BodyThrust") then
-				v:Destroy()
-			end
-		end
+local function onUpdate()
+    if Humanoid.MoveDirection.Magnitude <= 0 and Humanoid:GetState() ~= Enum.HumanoidStateType.Running then
+        resetVelocity()
     end
-end)
+end
+
+RunService.RenderStepped:Connect(onUpdate)
+RunService.PostSimulation:Connect(onUpdate)
+RunService.PreRender:Connect(onUpdate)
 	end
 })
 
