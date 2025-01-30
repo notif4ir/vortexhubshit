@@ -68,14 +68,14 @@ Tab2:CreateButton({
 	Callback = function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/tamarixr/tamhub/main/animtelp.lua"))()
 	end
-end)
+})
 
 Tab2:CreateButton({
 	Name = "Bypass Stun/Ragdoll",
 	Callback = function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/tamarixr/tamhub/main/nostun.lua",true))()
 	end
-end)
+})
 
 Tab2:CreateButton({
 	Name = "Camera Control",
@@ -83,9 +83,9 @@ Tab2:CreateButton({
 		game["Run Service"].RenderStepped:Connect(function()
     game.Workspace.CurrentCamera.CameraType=Enum.CameraType.Custom
     game.Players.LocalPlayer.Character.Humanoid.AutoRotate=true
-end)
+	end)
 	end
-end)
+})
 
 Tab2:CreateButton({
 	Name = "Camera Control",
@@ -93,9 +93,9 @@ Tab2:CreateButton({
 		game["Run Service"].RenderStepped:Connect(function()
     game.Workspace.CurrentCamera.CameraType=Enum.CameraType.Custom
     game.Players.LocalPlayer.Character.Humanoid.AutoRotate=true
-end)
+	end)
 	end
-end)
+})
 
 Tab2:CreateButton({
 	Name = "No Velocity/Knockback",
