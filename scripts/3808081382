@@ -64,39 +64,94 @@ spawn(function()
 end)
 
 Tab2:CreateButton({
+	Name = "Anime Teleport [T]",
+	Callback = function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/tamarixr/tamhub/main/animtelp.lua"))()
+	end
+end)
+
+Tab2:CreateButton({
+	Name = "Bypass Stun/Ragdoll",
+	Callback = function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/tamarixr/tamhub/main/nostun.lua",true))()
+	end
+end)
+
+Tab2:CreateButton({
+	Name = "Camera Control",
+	Callback = function()
+		game["Run Service"].RenderStepped:Connect(function()
+    game.Workspace.CurrentCamera.CameraType=Enum.CameraType.Custom
+    game.Players.LocalPlayer.Character.Humanoid.AutoRotate=true
+end)
+	end
+end)
+
+Tab2:CreateButton({
+	Name = "Camera Control",
+	Callback = function()
+		game["Run Service"].RenderStepped:Connect(function()
+    game.Workspace.CurrentCamera.CameraType=Enum.CameraType.Custom
+    game.Players.LocalPlayer.Character.Humanoid.AutoRotate=true
+end)
+	end
+end)
+
+Tab2:CreateButton({
+	Name = "No Velocity/Knockback",
+	Callback = function()
+		game["Run Service"].RenderStepped:Connect(function()
+    local movedirection = game.Players.LocalPlayer.Character.Humanoid.MoveDirection
+    local jump = game.Players.LocalPlayer.Character.Humanoid.Jump
+    if movedirection.Magnitude < 0.01 and not jump then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+		for i,v in game.Players.LocalPlayer.Character:GetDescendants() do
+			if v:IsA("BodyVelocity") or v:IsA("LinearVelocity") or v:IsA("BodyPosition") or v:IsA("BodyThrust") then
+				v:Destroy()
+			end
+		end
+    end
+end)
+
+game["Run Service"].PostSimulation:Connect(function()
+    local movedirection = game.Players.LocalPlayer.Character.Humanoid.MoveDirection
+    local jump = game.Players.LocalPlayer.Character.Humanoid.Jump
+    if movedirection.Magnitude < 0.01 and not jump then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+		for i,v in game.Players.LocalPlayer.Character:GetDescendants() do
+			if v:IsA("BodyVelocity") or v:IsA("LinearVelocity") or v:IsA("BodyPosition") or v:IsA("BodyThrust") then
+				v:Destroy()
+			end
+		end
+    end
+end)
+
+
+game["Run Service"].PreRender:Connect(function()
+    local movedirection = game.Players.LocalPlayer.Character.Humanoid.MoveDirection
+    local jump = game.Players.LocalPlayer.Character.Humanoid.Jump
+    if movedirection.Magnitude < 0.01 and not jump then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+		for i,v in game.Players.LocalPlayer.Character:GetDescendants() do
+			if v:IsA("BodyVelocity") or v:IsA("LinearVelocity") or v:IsA("BodyPosition") or v:IsA("BodyThrust") then
+				v:Destroy()
+			end
+		end
+    end
+end)
+	end
+})
+
+Tab2:CreateButton({
 	Name = "Disable Animations",
 	Callback = function()
 		game["Run Service"].RenderStepped:Connect(function()
 			for i,v in game.Players.LocalPlayer.Character.Humanoid.Animator:GetPlayingAnimationTracks() do
 				v:Stop()
 			end
-		end)
-	end
-})
-
-Tab2:CreateButton({
-	Name = "Ragdoll Bypass",
-	Callback = function()
-game["Run Service"].RenderStepped:Connect(function()
-    local humanoid = game.Players.LocalPlayer.Character.Humanoid
-    if humanoid:GetState() == Enum.HumanoidStateType.Freefall or
-       humanoid:GetState() == Enum.HumanoidStateType.Physics or
-       humanoid:GetState() == Enum.HumanoidStateType.Ragdoll then
-        humanoid:ChangeState(Enum.HumanoidStateType.GettingUp)
-        wait(0.5) -- wait for a bit before switching to Standing
-        humanoid:ChangeState(Enum.HumanoidStateType.Seated) -- Or change to Standing if needed
-    end
-end)
-
-	end
-})
-
-Tab2:CreateButton({
-	Name = "Camera Control",
-	Callback = function()
-		game["Run Service"].RenderStepped:Connect(function()
-    		game.Workspace.CurrentCamera.CameraType=Enum.CameraType.Custom
-    		game.Players.LocalPlayer.Character.Humanoid.AutoRotate=true
 		end)
 	end
 })
